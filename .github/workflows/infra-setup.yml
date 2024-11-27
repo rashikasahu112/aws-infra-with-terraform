@@ -2,12 +2,16 @@ name: Deploy AWS Infrastructure
 on:
   push:
     branches: [ "main" ]
+
 env:
   AWS_REGION: ap-south-1
   PROJECT_NAME: ${{ vars.PROJECT_NAME }}  
   env: 'dev'  
   TERRAFORM_VERSION: 1.7.0  
 
+permissions:
+  id-token: write
+  contents: read
 
 jobs:
   terraform:
