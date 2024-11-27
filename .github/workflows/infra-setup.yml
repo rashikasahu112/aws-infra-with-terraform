@@ -33,6 +33,10 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
+      - name: Terraform Format Check
+        run: echo ${{ vars.env }}
+
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
