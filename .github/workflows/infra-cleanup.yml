@@ -1,12 +1,12 @@
-name: Cleanup AWS Infrastructure
-
+name: Deploy AWS Infrastructure
 on:
-  workflow_dispatch:
+  push:
+    branches: [ "main" ]
 
 env:
   AWS_REGION: ap-south-1
   PROJECT_NAME: ${{ vars.PROJECT_NAME }}  
-  environment: 'dev'  
+  ENVIRONMENT: dev  
   TERRAFORM_VERSION: 1.7.0  
 
 permissions:
@@ -15,7 +15,7 @@ permissions:
 
 jobs:
   terraform:
-    name: Cleanup Infrastructure
+    name: Deploy Infrastructure
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -32,17 +32,10 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Terraform Format Check
-        run: echo ${{ vars.environment }}
-
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: ${{ env.TERRAFORM_VERSION }}
-
-      - name: Terraform Format Check
-        run: terraform fmt -check
-        continue-on-error: true
 
       - name: Terraform Init
         run: terraform init
@@ -54,13 +47,13 @@ jobs:
         run: terraform validate
 
       - name: Terraform Plan
-        run: terraform plan
+        run: terraform plan -var env=${{env.ENVIRONMENT}}
         env:
           TF_VAR_project_name: ${{ vars.PROJECT_NAME }}
-          TF_VAR_env: ${{ vars.environment }}
+          TF_VAR_env: ${{ env.ENVIRONMENT }}
 
       - name: Terraform Destroy
-        run: terraform destroy -auto-approve
+        run: terraform destroy -auto-approve -var env=${{vars.ENVIRONMENT}}
         env:
-          TF_VAR_project_name: ${{ vars.PROJECT_NAME }}
-          TF_VAR_env: ${{ vars.environment }}
+          TF_VAR_project_name: ${{ env.PROJECT_NAME }}
+          TF_VAR_env: ${{ env.ENVIRONMENT }}
