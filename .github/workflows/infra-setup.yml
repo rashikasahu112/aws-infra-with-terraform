@@ -7,7 +7,7 @@ on:
 env:
   AWS_REGION: ap-south-1
   PROJECT_NAME: ${{ vars.PROJECT_NAME }}  
-  env: 'dev'  
+  environment: 'dev'  
   TERRAFORM_VERSION: 1.7.0  
 
 permissions:
@@ -34,7 +34,7 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Terraform Format Check
-        run: echo ${{ vars.env }}
+        run: echo ${{ vars.environment }}
 
 
       - name: Setup Terraform
@@ -59,11 +59,11 @@ jobs:
         run: terraform plan -no-color
         env:
           TF_VAR_project_name: ${{ vars.PROJECT_NAME }}
-          TF_VAR_env: ${{ vars.env }}
+          TF_VAR_env: ${{ vars.environment }}
 
       - name: Terraform Apply
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform apply -auto-approve
         env:
           TF_VAR_project_name: ${{ vars.PROJECT_NAME }}
-          TF_VAR_env: ${{ vars.env }}
+          TF_VAR_env: ${{ vars.environment }}
