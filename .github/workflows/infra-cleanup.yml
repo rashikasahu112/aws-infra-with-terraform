@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   terraform:
-    name: Deploy Infrastructure
+    name: Destroy Infrastructure
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -38,10 +38,6 @@ jobs:
         with:
           terraform_version: ${{ env.TERRAFORM_VERSION }}
 
-      - name: Terraform Format Check
-        run: terraform fmt -check
-        continue-on-error: true
-
       - name: Terraform Init
         run: terraform init
         env:
@@ -54,11 +50,11 @@ jobs:
       - name: Terraform Plan
         run: terraform plan -no-color
         env:
-          TF_VAR_project_name: ${{ vars.PROJECT_NAME }}
+          TF_VAR_project_name: ${{ env.PROJECT_NAME }}
           TF_VAR_env: ${{ env.environment }}
 
       - name: Terraform Destroy
         run: terraform destroy -auto-approve
         env:
-          TF_VAR_project_name: ${{ vars.PROJECT_NAME }}
-          TF_VAR_env: ${{ vars.environment }}
+          TF_VAR_project_name: ${{ env.PROJECT_NAME }}
+          TF_VAR_env: ${{ env.environment }}

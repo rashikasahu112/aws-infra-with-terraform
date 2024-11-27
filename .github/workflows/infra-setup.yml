@@ -48,7 +48,7 @@ jobs:
       - name: Terraform Plan
         run: terraform plan
         env:
-          TF_VAR_project_name: ${{ vars.PROJECT_NAME }}
+          TF_VAR_project_name: ${{ env.PROJECT_NAME }}
           TF_VAR_env: ${{ env.ENVIRONMENT }}
 
       - name: Terraform Apply
