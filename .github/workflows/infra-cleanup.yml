@@ -1,13 +1,12 @@
-name: Deploy AWS Infrastructure
+name: Cleanup AWS Infrastructure
 
 on:
-  push:
-    branches: [ "main" ]
+  workflow_dispatch:
 
 env:
   AWS_REGION: ap-south-1
   PROJECT_NAME: ${{ vars.PROJECT_NAME }}  
-  environment: dev  
+  environment: 'dev'  
   TERRAFORM_VERSION: 1.7.0  
 
 permissions:
@@ -36,7 +35,6 @@ jobs:
       - name: Terraform Format Check
         run: echo ${{ vars.environment }}
 
-
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
@@ -61,8 +59,8 @@ jobs:
           TF_VAR_project_name: ${{ vars.PROJECT_NAME }}
           TF_VAR_env: ${{ vars.environment }}
 
-      - name: Terraform Apply
-        run: terraform apply -auto-approve
+      - name: Terraform Destroy
+        run: terraform destory -auto-approve
         env:
           TF_VAR_project_name: ${{ vars.PROJECT_NAME }}
           TF_VAR_env: ${{ vars.environment }}
