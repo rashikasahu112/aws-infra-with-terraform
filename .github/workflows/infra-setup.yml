@@ -9,7 +9,7 @@ env:
   PROJECT_NAME: ${{ vars.PROJECT_NAME }}  
   ENVIRONMENT: dev  
   TERRAFORM_VERSION: 1.7.0  
-
+ 
 permissions:
   id-token: write
   contents: read
