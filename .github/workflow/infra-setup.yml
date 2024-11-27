@@ -6,7 +6,7 @@ env:
   AWS_REGION: ap-south-1
   PROJECT_NAME: ${{ vars.PROJECT_NAME }}  
   env: 'dev'  
-  TERRAFORM_VERSION: 1.7.0  # Corrected to latest Terraform version
+  TERRAFORM_VERSION: 1.7.0  
 
 
 jobs:
