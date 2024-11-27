@@ -15,7 +15,7 @@ permissions:
 
 jobs:
   terraform:
-    name: Deploy Infrastructure
+    name: Cleanup Infrastructure
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -60,7 +60,7 @@ jobs:
           TF_VAR_env: ${{ vars.environment }}
 
       - name: Terraform Destroy
-        run: terraform destory -auto-approve
+        run: terraform destroy -auto-approve
         env:
           TF_VAR_project_name: ${{ vars.PROJECT_NAME }}
           TF_VAR_env: ${{ vars.environment }}
