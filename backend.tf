@@ -1,7 +1,7 @@
 terraform {
   backend "s3" {
-    bucket         = "${var.bucket_name}"
+    bucket         = "s3-terraform-state-files-rashika"
     key            = "terraform.tfstate"
-    region         = "${var.aws_region}"
+    region         = "ap-south-1"
   }
 }
