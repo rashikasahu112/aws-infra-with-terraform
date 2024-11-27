@@ -7,7 +7,7 @@ on:
 env:
   AWS_REGION: ap-south-1
   PROJECT_NAME: ${{ vars.PROJECT_NAME }}  
-  environment: dev  
+  ENVIRONMENT: dev  
   TERRAFORM_VERSION: 1.7.0  
 
 permissions:
@@ -33,10 +33,6 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Terraform Format Check
-        run: echo ${{ vars.environment }}
-
-
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
@@ -59,10 +55,10 @@ jobs:
         run: terraform plan -no-color
         env:
           TF_VAR_project_name: ${{ vars.PROJECT_NAME }}
-          TF_VAR_env: ${{ vars.environment }}
+          TF_VAR_env: ${{ vars.ENVIRONMENT }}
 
       - name: Terraform Apply
         run: terraform apply -auto-approve
         env:
           TF_VAR_project_name: ${{ vars.PROJECT_NAME }}
-          TF_VAR_env: ${{ vars.environment }}
+          TF_VAR_env: ${{ vars.ENVIRONMENT }}
