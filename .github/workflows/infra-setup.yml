@@ -47,13 +47,13 @@ jobs:
         run: terraform validate
 
       - name: Terraform Plan
-        run: terraform plan -var env=${{env.ENVIRONMENT}}
+        run: terraform plan
         env:
           TF_VAR_project_name: ${{ vars.PROJECT_NAME }}
           TF_VAR_env: ${{ env.ENVIRONMENT }}
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve -var env=${{vars.ENVIRONMENT}}
+        run: terraform apply -auto-approve
         env:
           TF_VAR_project_name: ${{ env.PROJECT_NAME }}
           TF_VAR_env: ${{ env.ENVIRONMENT }}

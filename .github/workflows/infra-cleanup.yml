@@ -1,4 +1,5 @@
-name: Deploy AWS Infrastructure
+name: Cleanup AWS Infrastructure
+
 on:
   push:
     branches: [ "main" ]
@@ -6,7 +7,7 @@ on:
 env:
   AWS_REGION: ap-south-1
   PROJECT_NAME: ${{ vars.PROJECT_NAME }}  
-  ENVIRONMENT: dev  
+  environment: 'dev'  
   TERRAFORM_VERSION: 1.7.0  
 
 permissions:
@@ -37,6 +38,10 @@ jobs:
         with:
           terraform_version: ${{ env.TERRAFORM_VERSION }}
 
+      - name: Terraform Format Check
+        run: terraform fmt -check
+        continue-on-error: true
+
       - name: Terraform Init
         run: terraform init
         env:
@@ -47,13 +52,13 @@ jobs:
         run: terraform validate
 
       - name: Terraform Plan
-        run: terraform plan -var env=${{env.ENVIRONMENT}}
+        run: terraform plan -no-color
         env:
           TF_VAR_project_name: ${{ vars.PROJECT_NAME }}
-          TF_VAR_env: ${{ env.ENVIRONMENT }}
+          TF_VAR_env: ${{ env.environment }}
 
       - name: Terraform Destroy
-        run: terraform destroy -auto-approve -var env=${{vars.ENVIRONMENT}}
+        run: terraform destroy -auto-approve
         env:
-          TF_VAR_project_name: ${{ env.PROJECT_NAME }}
-          TF_VAR_env: ${{ env.ENVIRONMENT }}
+          TF_VAR_project_name: ${{ vars.PROJECT_NAME }}
+          TF_VAR_env: ${{ vars.environment }}
