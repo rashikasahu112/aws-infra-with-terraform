@@ -4,11 +4,14 @@ resource "aws_instance" "ec2" {
   subnet_id                   = aws_subnet.subnet1.id
   vpc_security_group_ids      = [aws_security_group.security_group.id]
   associate_public_ip_address = true
-  user_data                   = base64encode(file("startup.sh"))
+  user_data                   = filebase64("startup.sh")
   key_name                    = "key-pair"
   tags = {
-    project_name = "${var.project_name}"
-    env          = "${var.env}"
+    project_name = var.project_name
+    env          = var.env
   }
 }
 
+output "user_data_script" {
+  value = file("startup.sh")
+}
