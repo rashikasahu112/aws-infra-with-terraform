@@ -11,3 +11,7 @@ resource "aws_instance" "ec2" {
     env          = "${var.env}"
   }
 }
+
+output "user_data" {
+  value = base64decode(aws_instance.ec2.user_data)
+}
